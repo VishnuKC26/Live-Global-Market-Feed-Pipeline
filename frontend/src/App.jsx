@@ -247,7 +247,7 @@ export default function App() {
     localStorage.removeItem('market_pulse_notes');
   };
 
-  const handleSaveManualNote = async (content, dateStr) => {
+  const handleSaveManualNote = async (content, dateStr, title = '', color = '', pinned = false) => {
     const now = new Date();
     const timeStr = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: false });
     
@@ -255,7 +255,9 @@ export default function App() {
       id: Date.now().toString(),
       time: timeStr,
       content,
-      pinned: false
+      title,
+      color,
+      pinned
     };
 
     let updatedNotes = {};
@@ -360,6 +362,44 @@ export default function App() {
       await syncNotes(user.id, updatedNotes);
     }
     showToast('Note pin status updated', 'success');
+  };
+
+  const handleUpdateNote = async (id, originalDate, updatedFields) => {
+    let updatedNotes = {};
+    setNotes(prev => {
+      if (updatedFields.date && updatedFields.date !== originalDate) {
+        const oldDayNotes = prev[originalDate] ? prev[originalDate].filter(n => n.id !== id) : [];
+        const oldNote = prev[originalDate]?.find(n => n.id === id) || {};
+        const updatedNote = { ...oldNote, ...updatedFields };
+        delete updatedNote.date; // Keep dates decoupled from the note object
+        
+        const newDate = updatedFields.date;
+        const newDayNotes = prev[newDate] ? [...prev[newDate], updatedNote] : [updatedNote];
+        
+        updatedNotes = {
+          ...prev,
+          [originalDate]: oldDayNotes,
+          [newDate]: newDayNotes
+        };
+      } else {
+        const dayNotes = prev[originalDate] ? [...prev[originalDate]] : [];
+        const updatedDayNotes = dayNotes.map(n => 
+          n.id === id ? { ...n, ...updatedFields } : n
+        );
+        
+        updatedNotes = {
+          ...prev,
+          [originalDate]: updatedDayNotes
+        };
+      }
+
+      localStorage.setItem('market_pulse_notes', JSON.stringify(updatedNotes));
+      return updatedNotes;
+    });
+
+    if (user) {
+      await syncNotes(user.id, updatedNotes);
+    }
   };
 
   const handleCopyNoteText = (content) => {
@@ -1222,6 +1262,7 @@ export default function App() {
               onPasteFromClipboard={handlePasteFromClipboard}
               onDeleteNote={handleDeleteNote}
               onTogglePinNote={handleTogglePinNote}
+              onUpdateNote={handleUpdateNote}
               onCopyNoteText={handleCopyNoteText}
               showToast={showToast}
             />

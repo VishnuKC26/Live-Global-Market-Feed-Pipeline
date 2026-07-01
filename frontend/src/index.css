@@ -1404,17 +1404,22 @@ body {
 .notepad-container {
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 28px;
   padding: 0 40px 40px 40px;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
 }
 
 .notepad-search-row {
   margin-top: 16px;
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
 }
+
+
 
 .notepad-search-wrapper {
   position: relative;
@@ -1448,6 +1453,7 @@ body {
   box-shadow: 0 0 0 2px var(--accent-glow);
 }
 
+/* Date Selector Navigation */
 .notepad-date-navigation {
   display: flex;
   justify-content: space-between;
@@ -1458,6 +1464,12 @@ body {
   border: 1px solid var(--border-color);
   padding: 12px 16px;
   border-radius: 8px;
+  animation: fadeIn 0.2s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 .navigation-buttons {
@@ -1588,148 +1600,250 @@ body {
   margin: 8px 0 0 0;
 }
 
-.notepad-input-form {
+/* Note Creator Card ("Take a note...") */
+.notepad-creator-wrapper {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+.notepad-creator {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
   border-radius: 8px;
+  width: 100%;
+  max-width: 580px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.notepad-creator.expanded {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.25);
+  border-color: var(--text-muted);
+}
+
+.notepad-creator-collapsed {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  cursor: text;
+}
+
+.notepad-creator-collapsed-text {
+  color: var(--text-muted);
+  font-size: 0.95rem;
+  font-weight: 500;
+}
+
+.notepad-creator-collapsed-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.notepad-creator-expanded {
   padding: 16px;
   display: flex;
   flex-direction: column;
   gap: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
 }
 
-.notepad-textarea {
-  width: 100%;
-  background: var(--bg-dark);
-  border: 1px solid var(--border-color);
-  border-radius: 6px;
-  padding: 12px;
-  color: var(--text-primary);
-  font-family: inherit;
-  font-size: 0.95rem;
-  line-height: 1.5;
-  resize: vertical;
-  outline: none;
-  transition: all 0.2s ease;
-}
-
-.notepad-textarea:focus {
-  border-color: var(--accent-color);
-  box-shadow: 0 0 0 2px var(--accent-glow);
-}
-
-.notepad-form-actions {
+.notepad-creator-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  flex-wrap: wrap;
+  justify-content: space-between;
   gap: 12px;
 }
 
-.btn-clipboard-paste {
-  background: rgba(168, 85, 247, 0.1);
-  border: 1px solid rgba(168, 85, 247, 0.25);
-  color: #c084fc;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-size: 0.875rem;
+.notepad-creator-title-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.05rem;
   font-weight: 600;
-  cursor: pointer;
+  outline: none;
+}
+
+.notepad-creator-title-input::placeholder {
+  color: var(--text-muted);
+}
+
+.notepad-creator-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 0.95rem;
+  line-height: 1.5;
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+  font-family: inherit;
+}
+
+.notepad-creator-textarea::placeholder {
+  color: var(--text-muted);
+}
+
+.notepad-creator-date-row {
   display: flex;
   align-items: center;
   gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 8px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.theme-sepia .notepad-creator-date-row {
+  border-top-color: rgba(0, 0, 0, 0.05);
+}
+
+.notepad-creator-date-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  padding: 2px 6px;
+  outline: none;
+  cursor: pointer;
+}
+
+.theme-sepia .notepad-creator-date-input {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.notepad-creator-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 12px;
+  margin-top: 4px;
+}
+
+.theme-sepia .notepad-creator-footer {
+  border-top-color: rgba(0, 0, 0, 0.05);
+}
+
+.notepad-creator-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.btn-creator-action {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
   transition: all 0.2s ease;
+  position: relative;
 }
 
-.btn-clipboard-paste:hover {
-  background: rgba(168, 85, 247, 0.18);
-  border-color: rgba(168, 85, 247, 0.45);
+.btn-creator-action:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-primary);
 }
 
-.theme-sepia .btn-clipboard-paste {
-  background: rgba(168, 85, 247, 0.08);
-  border-color: rgba(168, 85, 247, 0.2);
-  color: #7e22ce;
+.theme-sepia .btn-creator-action:hover {
+  background: rgba(0, 0, 0, 0.05);
 }
 
-.theme-sepia .btn-clipboard-paste:hover {
-  background: rgba(168, 85, 247, 0.14);
+.notepad-creator-buttons {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
-.btn-save-note {
+.btn-creator-save {
   background: var(--accent-color);
   color: var(--bg-dark);
   border: none;
-  padding: 8px 16px;
   border-radius: 6px;
-  font-size: 0.875rem;
+  padding: 6px 14px;
+  font-size: 0.85rem;
   font-weight: 700;
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
   transition: all 0.2s ease;
 }
 
-.btn-save-note:hover:not(:disabled) {
+.btn-creator-save:hover:not(:disabled) {
   background: var(--text-primary);
   color: var(--bg-card);
 }
 
-.btn-save-note:disabled {
+.btn-creator-save:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
-.notepad-notes-section {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-
-.notepad-section-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  border-bottom: 1px solid var(--border-color);
-  padding-bottom: 8px;
-}
-
-.notepad-section-header h3 {
-  font-size: 1rem;
-  font-weight: 600;
+.btn-creator-close {
+  background: transparent;
+  border: none;
   color: var(--text-secondary);
-  margin: 0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-creator-close:hover {
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.theme-sepia .btn-creator-close:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+
+
+/* Keep Notes Section Headers & Grid Layout */
+.notepad-grid-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.notepad-grid-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  letter-spacing: 0.8px;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-bottom: 6px;
 }
 
-.notepad-empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 40px 20px;
-  text-align: center;
-  background: rgba(255, 255, 255, 0.01);
-  border: 1px dashed var(--border-color);
-  border-radius: 8px;
-  color: var(--text-muted);
-  gap: 12px;
+.theme-sepia .notepad-grid-section-title {
+  border-bottom-color: rgba(0, 0, 0, 0.05);
 }
 
-.notepad-empty-state .empty-icon {
-  color: var(--text-muted);
-  opacity: 0.5;
+.notepad-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  align-items: start;
 }
 
-.notepad-entries-list {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
+/* Note Card Keep Styling */
 .notepad-entry-card {
   background: var(--bg-card);
   border: 1px solid var(--border-color);
@@ -1737,56 +1851,106 @@ body {
   padding: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+  gap: 8px;
+  position: relative;
+  cursor: pointer;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+  min-height: 100px;
 }
 
 .notepad-entry-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
   border-color: var(--text-muted);
 }
 
 .notepad-entry-card.pinned {
   border-left: 4px solid var(--accent-color);
-  background: linear-gradient(90deg, var(--accent-glow) 0%, var(--bg-card) 100%);
 }
 
 .entry-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
+  gap: 8px;
 }
 
-.entry-meta {
+.entry-title {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+  word-break: break-word;
+}
+
+.btn-card-pin {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.2s ease, color 0.2s ease, background 0.2s ease;
 }
 
-.entry-time {
-  font-size: 0.8rem;
-  font-weight: 700;
+.notepad-entry-card:hover .btn-card-pin,
+.btn-card-pin.active-pin {
+  opacity: 1;
+}
+
+.btn-card-pin:hover {
+  background: rgba(255, 255, 255, 0.07);
+  color: var(--text-primary);
+}
+
+.theme-sepia .btn-card-pin:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.btn-card-pin.active-pin {
   color: var(--accent-color);
-  letter-spacing: 0.5px;
 }
 
-.pinned-badge {
-  display: inline-flex;
+.entry-content {
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+  flex-grow: 1;
+}
+
+.entry-date-badge {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  background: rgba(255, 255, 255, 0.04);
+  padding: 2px 6px;
+  border-radius: 4px;
+  align-self: flex-start;
+  margin-top: 4px;
+}
+
+.theme-sepia .entry-date-badge {
+  background: rgba(0, 0, 0, 0.03);
+}
+
+/* Card Hover Actions Toolbar */
+.entry-hover-actions {
+  display: flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 8px;
-  border-radius: 12px;
-  background: var(--accent-glow);
-  color: var(--accent-color);
-  font-size: 0.7rem;
-  font-weight: 600;
-  border: 1px solid var(--accent-border);
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-.entry-actions {
-  display: flex;
-  align-items: center;
-  gap: 6px;
+.notepad-entry-card:hover .entry-hover-actions {
+  opacity: 1;
 }
 
 .btn-entry-action {
@@ -1794,17 +1958,18 @@ body {
   border: none;
   color: var(--text-muted);
   cursor: pointer;
-  width: 28px;
-  height: 28px;
-  border-radius: 4px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.2s ease;
+  position: relative;
 }
 
 .btn-entry-action:hover {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.07);
   color: var(--text-primary);
 }
 
@@ -1812,59 +1977,160 @@ body {
   background: rgba(0, 0, 0, 0.05);
 }
 
-.btn-entry-action.active-pin {
-  color: var(--accent-color);
-}
-
 .btn-entry-action.hover-danger:hover {
   color: #ef4444;
   background: rgba(239, 68, 68, 0.1);
 }
 
-.entry-content {
+/* Edit Modal Styling */
+.notepad-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.notepad-modal-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  width: 90%;
+  max-width: 580px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  padding: 18px;
+  gap: 12px;
+  animation: scaleUp 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  position: relative;
+}
+
+@keyframes scaleUp {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.notepad-modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.notepad-modal-title-input {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.15rem;
+  font-weight: 600;
+  outline: none;
+}
+
+.notepad-modal-textarea {
+  width: 100%;
+  background: transparent;
+  border: none;
+  color: var(--text-primary);
   font-size: 0.95rem;
   line-height: 1.5;
-  color: var(--text-primary);
-  margin: 0;
-  white-space: pre-wrap;
+  resize: vertical;
+  min-height: 150px;
+  outline: none;
+  font-family: inherit;
 }
 
-/* Search Results Matches styling */
-.search-match {
-  border-left: 2px solid var(--border-color);
-}
-
-.btn-link {
-  background: transparent;
-  border: none;
-  color: var(--accent-color);
-  font-size: 0.85rem;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: underline;
-  padding: 0;
-}
-
-.btn-link:hover {
-  color: var(--text-primary);
-}
-
-.btn-link-action {
-  background: transparent;
-  border: none;
-  color: var(--accent-color);
+.notepad-modal-date-picker {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 8px;
   font-size: 0.8rem;
-  font-weight: 600;
-  cursor: pointer;
-  padding: 4px 8px;
-  border-radius: 4px;
-  border: 1px solid var(--border-color);
-  transition: all 0.2s ease;
+  color: var(--text-secondary);
 }
 
-.btn-link-action:hover {
-  background: var(--accent-glow);
-  border-color: var(--accent-border);
+.theme-sepia .notepad-modal-date-picker {
+  border-top-color: rgba(0, 0, 0, 0.05);
+}
+
+.notepad-modal-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  padding-top: 12px;
+}
+
+.theme-sepia .notepad-modal-footer {
+  border-top-color: rgba(0, 0, 0, 0.05);
+}
+
+
+
+/* Empty State */
+.notepad-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 60px 20px;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px dashed var(--border-color);
+  border-radius: 8px;
+  color: var(--text-muted);
+  gap: 12px;
+  grid-column: 1 / -1;
+  width: 100%;
+}
+
+.notepad-empty-state .empty-icon {
+  color: var(--text-muted);
+  opacity: 0.4;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .notepad-container {
+    padding: 16px;
+  }
+  
+  .notepad-search-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .notepad-filter-bar {
+    width: 100%;
+    justify-content: space-between;
+  }
+  
+  .notepad-search-wrapper {
+    max-width: 100%;
+  }
+
+  .btn-card-pin {
+    opacity: 1;
+  }
+
+  .entry-hover-actions {
+    opacity: 1;
+  }
+}
+
+@media (max-width: 450px) {
+  .notepad-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* ==========================================
